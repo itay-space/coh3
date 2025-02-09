@@ -1,0 +1,4 @@
+Run these to compile 
+aclocal
+autoconf
+automake --add-missing

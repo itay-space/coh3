@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <iomanip>
-
+#include <fstream>
 #include "structur.h"
 #include "optical.h"
 #include "omcalc.h"
@@ -92,6 +92,48 @@ int omCalc
   if(prn.system && ctl.entrance) outOMP(0,&omp);
 
   omPotentialForm(zzprod, &omp, &lev, &pot);
+  // Open file for writing
+std::ofstream file("/home/itay/COH/projects/optical_potential.txt");
+
+if (!file) {
+    std::cerr << "Error: Unable to open file for writing!" << std::endl;
+} else {
+    file << "------------------------------------\n";
+    file << "Optical Potential Information\n";
+    file << "------------------------------------\n";
+    file << std::setw(10) << "r [fm]"
+         << std::setw(15) << "V_real [MeV]"
+         << std::setw(15) << "V_imag [MeV]"
+         << std::setw(15) << "SO_real [MeV]"
+         << std::setw(15) << "SO_imag [MeV]"
+         << std::setw(15) << "Coulomb [MeV]"
+         << std::setw(15) << "1/r^2 [1/fm^2]"
+         << "\n";
+
+    for (int i = 0; i < pot.n_match; i++) {  // Ensure no out-of-bounds access
+        double r = i * pot.width;
+        double V_real = pot.mean_field[i].real();
+        double V_imag = pot.mean_field[i].imag();
+        double SO_real = pot.spin_orbit[i].real();
+        double SO_imag = pot.spin_orbit[i].imag();
+        double Coulomb = pot.coulomb[i];
+        double R2inv = pot.r2inv[i];
+
+        file << std::setw(10) << r
+             << std::setw(15) << V_real
+             << std::setw(15) << V_imag
+             << std::setw(15) << SO_real
+             << std::setw(15) << SO_imag
+             << std::setw(15) << Coulomb
+             << std::setw(15) << R2inv
+             << "\n";
+    }
+
+    file << "------------------------------------\n";
+    file.close();  // Close the file
+    std::cout << "Optical potential data saved to optical_potential.txt" << std::endl;
+}
+
 
 //---------------------------------------
 //      Main Calculation
