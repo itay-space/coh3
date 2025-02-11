@@ -92,8 +92,9 @@ int omCalc
   if(prn.system && ctl.entrance) outOMP(0,&omp);
 
   omPotentialForm(zzprod, &omp, &lev, &pot);
-  // Open file for writing
-std::ofstream file("/home/itay/COH/projects/optical_potential.txt");
+
+
+std::ofstream file("/home/itay/COH/coh3/projects/optical_potential.txt");
 
 if (!file) {
     std::cerr << "Error: Unable to open file for writing!" << std::endl;

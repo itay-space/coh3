@@ -48,6 +48,8 @@ int omPotentialForm(const int zzprod, Optical *omp, LevelData *ldt, Potential *p
                                                         /(omp->awso*omp->Rwso*energy))-eps);
 
   pot->rad_match = x[0];
+  std::cout << "Matching Radius: " << pot->rad_match << " fm" << std::endl;
+
   for(int i=1 ; i<6 ; i++) if(x[i] > pot->rad_match) pot->rad_match=x[i];
 
   n = (int)(pot->rad_match/pot->width)+1;
@@ -82,6 +84,7 @@ void omPotentialFixedLength(const int zzprod, Optical *omp, const double mu, Pot
     r = (double)i*pot->width;
     pot->r2inv[i]      =  (i == 0) ? 0.0 : 1.0 / (r*r);
     pot->mean_field[i] = c1 * omPotentialRadialMean(r,omp);
+    //std::cout << "c1 " <<c1 << std::endl;
     pot->spin_orbit[i] = c2 * omPotentialRadialSpo(r,omp);
     pot->coulomb[i]    = (zzprod != 0) ? c3 * omPotentialRadialCoulomb(r,omp) : 0.0;
 
