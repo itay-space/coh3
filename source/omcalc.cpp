@@ -162,6 +162,22 @@ if (!file) {
       if(xj < fabs(l-pspin)) continue;
       omInternalFunction(pot.n_match,pot.width,lev.wavesq,(double)l,pspin,xj,&pot,&wfn);
 
+// Save the wavefunction immediately after computation
+std::ofstream file("/home/itay/COH/coh3/projects/wavefunction.dat");
+if (!file.is_open()) {
+    std::cerr << "Error opening file for writing!\n";
+} else {
+    for (int i = 0; i < pot.n_match; i++) {
+        double R = i * pot.width;  // Compute radial position
+        std::complex<double> psi = wfn.internal[i];
+
+        file << R << " " << psi.real() << " " << psi.imag() << " " << std::abs(psi) << "\n";
+    }
+    file.close();
+    std::cout << "Wavefunction saved to wavefunction.dat\n";
+}
+
+
       int index = l*3+j;
       smat[index] = omSmatrix(pot.n_match,pot.width,pot.rad_match,a,b,&wfn);
       tran[index] = 1.0-norm(smat[index]); if(tran[index] < 0.0) tran[index] = 0.0;
