@@ -24,12 +24,16 @@ lagrange(double h, std::complex<double> a,std::complex<double> b, std::complex<d
 std::complex<double> omSmatrix(const int m, const double mesh, const double rm, std::complex<double> d1, std::complex<double> d2, Wavefunc *wfn)
 {
   std::complex<double> win, dwin, f, u1, u2, s;
-
+ // std::cout << "mesh" << mesh << std::endl;
   win  = wfn->internal[m-3];
   dwin = lagrange(mesh,wfn->internal[m-6],wfn->internal[m-5],
                        wfn->internal[m-4],wfn->internal[m-2],
                        wfn->internal[m-1],wfn->internal[m  ]);
   f = rm * dwin/win;
+  std::cout << "f" << f << std::endl;
+  std::cout << "rm" << rm << std::endl;
+  std::cout << "m-3 " << m-3 << std::endl;
+  std::cout << "dwin/win " << dwin/win << std::endl;
 
   u1 = std::complex<double>(f.real() - d1.real(), f.imag() + d1.imag());
   u2 = std::complex<double>(f.real() - d1.real(), f.imag() - d1.imag());

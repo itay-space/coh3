@@ -163,7 +163,7 @@ if (!file) {
       omInternalFunction(pot.n_match,pot.width,lev.wavesq,(double)l,pspin,xj,&pot,&wfn);
 
 // Save the wavefunction immediately after computation
-std::ofstream file("/home/itay/COH/coh3/projects/wavefunction.dat");
+std::ofstream file("/home/itay/COH/coh3/projects/intwavefunction_l_" + std::to_string(l) + ".dat");
 if (!file.is_open()) {
     std::cerr << "Error opening file for writing!\n";
 } else {
@@ -174,12 +174,31 @@ if (!file.is_open()) {
         file << R << " " << psi.real() << " " << psi.imag() << " " << std::abs(psi) << "\n";
     }
     file.close();
-    std::cout << "Wavefunction saved to wavefunction.dat\n";
+    std::cout << "inner Wavefunction saved to wavefunction.dat\n";
 }
+std::ofstream file1("/home/itay/COH/coh3/projects/intwavefunction_derivative_l_" + std::to_string(l) + ".dat");
+if (!file1.is_open()) {
+    std::cerr << "Error opening file for writing!\n";
+} else {
+    for (int i = 6; i < pot.n_match; i++) {  // Start from index 6 to ensure we have enough points
+        double R = i * pot.width;  // Compute radial position
+
+        // Apply the Lagrange differentiation formula directly
+        std::complex<double> dpsi = ((wfn.internal[i] - wfn.internal[i-6]) / 60.0 
+                                   + 0.15 * (wfn.internal[i-5] - wfn.internal[i-1]) 
+                                   + 0.75 * (wfn.internal[i-2] - wfn.internal[i-4])) / 1e-3;
+
+        file1 << R << " " << dpsi.real() << " " << dpsi.imag() << " " << std::abs(dpsi) << "\n";
+    }
+    file1.close();
+    std::cout << "Derivative of wavefunction saved to intwavefunction_derivative_l_" << l << ".dat\n";
+}
+
 
 
       int index = l*3+j;
       smat[index] = omSmatrix(pot.n_match,pot.width,pot.rad_match,a,b,&wfn);
+      std::cout << "smat[index]" << smat[index] <<"index"<<index <<std::endl;
       tran[index] = 1.0-norm(smat[index]); if(tran[index] < 0.0) tran[index] = 0.0;
 
 #ifdef NormalizedWavefunction

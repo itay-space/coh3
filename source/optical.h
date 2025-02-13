@@ -30,9 +30,9 @@ const int MAX_L            =   60;     // maximum angular momentum + 2
 const int MAX_L0           =  100;     // maximum iteration for F function
 const int MAX_CCMATRIX     =  120;     // maximal number of coupled equations
 const int MAX_LTRANS       =   10;     // maximum angular momentum transfer
-const int MAX_POINTS       =  300;     // maximum radial points
+const int MAX_POINTS       =  100000;     // maximum radial points
 
-const double INTEG_WIDTH   =  0.1    ; // default wave func. integral width
+const double INTEG_WIDTH   =  0.001    ; // default wave func. integral width
 const double CRIT_MATCHING =  1.0e-06; // matching radius criterion
 const double CRIT_LMAX     =  1.0e-10; // maximum angular momentum criterion
 const double CRIT_LCUT     =  1.0e-06; // reaction cross section converge
