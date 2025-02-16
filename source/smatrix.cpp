@@ -29,17 +29,14 @@ std::complex<double> omSmatrix(const int m, const double mesh, const double rm, 
   dwin = lagrange(mesh,wfn->internal[m-6],wfn->internal[m-5],
                        wfn->internal[m-4],wfn->internal[m-2],
                        wfn->internal[m-1],wfn->internal[m  ]);
-  f = rm * dwin/win;
-  std::cout << "f" << f << std::endl;
-  std::cout << "rm" << rm << std::endl;
-  std::cout << "m-3 " << m-3 << std::endl;
-  std::cout << "dwin/win " << dwin/win << std::endl;
-
+  f = rm * dwin/win; // r * du/u in = beta;
+  std::cout << "f" << f << std::endl; // beta
+ // d1 = a = 
   u1 = std::complex<double>(f.real() - d1.real(), f.imag() + d1.imag());
   u2 = std::complex<double>(f.real() - d1.real(), f.imag() - d1.imag());
-
+ // d2 = b =
   s = u1 / u2 * d2;
-
+ std::cout << "s" << s << std::endl; 
   return(s);
 }
 

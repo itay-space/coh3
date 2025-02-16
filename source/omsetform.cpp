@@ -37,8 +37,8 @@ int omPotentialForm(const int zzprod, Optical *omp, LevelData *ldt, Potential *p
 
   x[0] = x[1] = x[2] = x[3] = x[4] = x[5] = 0.0;
   if(potform & 0x0010) x[0]=omp->R0+omp->a0   *(log(    omp->volume.real()  /energy)-eps);
-  std::cout << "x[0] = omp->R0 + omp->a0 * ( log( omp->volume.real() / energy ) - eps )" << std::endl;
-  std::cout << "x[0] = " << omp->R0 << " + " << omp->a0 << " * ( log( " << omp->volume.real() << " / " << energy << " ) - " << eps << " )" << std::endl;
+ // std::cout << "x[0] = omp->R0 + omp->a0 * ( log( omp->volume.real() / energy ) - eps )" << std::endl;
+ // std::cout << "x[0] = " << omp->R0 << " + " << omp->a0 << " * ( log( " << omp->volume.real() << " / " << energy << " ) - " << eps << " )" << std::endl;
   if(potform & 0x0020) x[1]=omp->R0s+omp->a0s *(log(4.0*fabs(omp->surface.real())/energy)-eps);
   if(potform & 0x0001) x[2]=omp->Rv+omp->av   *(log(    omp->volume.imag()  /energy)-eps);
   if(potform & 0x0002) x[3]=omp->Rs+omp->as   *(log(4.0*omp->surface.imag() /energy)-eps);

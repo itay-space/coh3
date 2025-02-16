@@ -155,7 +155,9 @@ if (!file) {
   crx->elastic = crx->reaction = crx->total = 0.0;
   for(l=0 ; l<=cdt.lmax ; l++){
     a = wfn.extderiv[l] / wfn.external[l] * pot.rho_match;
-    b = conj(wfn.external[l]) / wfn.external[l];
+    std::cout << "wfn.external[l] = " << wfn.external[l] << std::endl; 
+    // this returns rho * conj(hankel2(rho))
+    b = conj(wfn.external[l]) / wfn.external[l]; // ubar / u out
 
     for(int j=0 ; j<jmax ; j++){
       double xj = l + pspin - (double)j;
