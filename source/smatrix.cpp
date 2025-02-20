@@ -30,13 +30,13 @@ std::complex<double> omSmatrix(const int m, const double mesh, const double rm, 
                        wfn->internal[m-4],wfn->internal[m-2],
                        wfn->internal[m-1],wfn->internal[m  ]);
   f = rm * dwin/win; // r * du/u in = beta;
-  std::cout << "f" << f << std::endl; // beta
+ // std::cout << "f" << f << std::endl; // beta
  // d1 = a = 
   u1 = std::complex<double>(f.real() - d1.real(), f.imag() + d1.imag());
   u2 = std::complex<double>(f.real() - d1.real(), f.imag() - d1.imag());
  // d2 = b =
   s = u1 / u2 * d2;
- std::cout << "s" << s << std::endl; 
+ //std::cout << "s" << s << std::endl; 
   return(s);
 }
 

@@ -132,7 +132,7 @@ if (!file) {
 
     file << "------------------------------------\n";
     file.close();  // Close the file
-    std::cout << "Optical potential data saved to optical_potential.txt" << std::endl;
+   // std::cout << "Optical potential data saved to optical_potential.txt" << std::endl;
 }
 
 
@@ -155,7 +155,7 @@ if (!file) {
   crx->elastic = crx->reaction = crx->total = 0.0;
   for(l=0 ; l<=cdt.lmax ; l++){
     a = wfn.extderiv[l] / wfn.external[l] * pot.rho_match;
-    std::cout << "wfn.external[l] = " << wfn.external[l] << std::endl; 
+   // std::cout << "wfn.external[l] = " << wfn.external[l] << std::endl; 
     // this returns rho * conj(hankel2(rho))
     b = conj(wfn.external[l]) / wfn.external[l]; // ubar / u out
 
@@ -176,7 +176,7 @@ if (!file.is_open()) {
         file << R << " " << psi.real() << " " << psi.imag() << " " << std::abs(psi) << "\n";
     }
     file.close();
-    std::cout << "inner Wavefunction saved to wavefunction.dat\n";
+  //  std::cout << "inner Wavefunction saved to wavefunction.dat\n";
 }
 std::ofstream file1("/home/itay/COH/coh3/projects/intwavefunction_derivative_l_" + std::to_string(l) + ".dat");
 if (!file1.is_open()) {
@@ -193,14 +193,14 @@ if (!file1.is_open()) {
         file1 << R << " " << dpsi.real() << " " << dpsi.imag() << " " << std::abs(dpsi) << "\n";
     }
     file1.close();
-    std::cout << "Derivative of wavefunction saved to intwavefunction_derivative_l_" << l << ".dat\n";
+   // std::cout << "Derivative of wavefunction saved to intwavefunction_derivative_l_" << l << ".dat\n";
 }
 
 
 
       int index = l*3+j;
       smat[index] = omSmatrix(pot.n_match,pot.width,pot.rad_match,a,b,&wfn);
-      std::cout << "smat[index]" << smat[index] <<"index"<<index <<std::endl;
+      std::cout << "Smatrix = " << smat[index] <<", l = "<<l <<std::endl;
       tran[index] = 1.0-norm(smat[index]); if(tran[index] < 0.0) tran[index] = 0.0;
 
 #ifdef NormalizedWavefunction
