@@ -9,7 +9,7 @@ unsigned int OMPscratch(double e,int at,int zt,int ai,int zi,Optical *omp)
   unsigned int pf = OMPWilmoreHodgson(at,  ai, zi, omp);
 
    
-  omp->v1  = 1; // 2m_redced/hbar^2 = 0.0474 MeV^-1 fm^-2
+  omp->v1  = 0; // 2m_redced/hbar^2 = 0.0474 MeV^-1 fm^-2
   omp->v2  = 0;  omp->v3  = 0 ;
   omp->ws1 =  0 ;  omp->ws2 = 0;  omp->ws3 =  0.0    ;
   omp->r0  =  1; // R = r0*A^(1/3)
