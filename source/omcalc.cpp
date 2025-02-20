@@ -94,7 +94,7 @@ int omCalc
   omPotentialForm(zzprod, &omp, &lev, &pot);
 
 
-std::ofstream file("/home/itay/COH/coh3/projects/optical_potential.txt");
+std::ofstream file("/home/itay/COH/coh3/projects/Fe56n_central_SO_V/optical_potential.txt");
 
 if (!file) {
     std::cerr << "Error: Unable to open file for writing!" << std::endl;
@@ -165,7 +165,7 @@ if (!file) {
       omInternalFunction(pot.n_match,pot.width,lev.wavesq,(double)l,pspin,xj,&pot,&wfn);
 
 // Save the wavefunction immediately after computation
-std::ofstream file("/home/itay/COH/coh3/projects/intwavefunction_l_" + std::to_string(l) + ".dat");
+std::ofstream file("/home/itay/COH/coh3/projects/Fe56n_central_SO_V/intwavefunction_l_" + std::to_string(l) + ".dat");
 if (!file.is_open()) {
     std::cerr << "Error opening file for writing!\n";
 } else {
@@ -178,7 +178,7 @@ if (!file.is_open()) {
     file.close();
   //  std::cout << "inner Wavefunction saved to wavefunction.dat\n";
 }
-std::ofstream file1("/home/itay/COH/coh3/projects/intwavefunction_derivative_l_" + std::to_string(l) + ".dat");
+std::ofstream file1("/home/itay/COH/coh3/projects/Fe56n_central_SO_V/intwavefunction_derivative_l_" + std::to_string(l) + ".dat");
 if (!file1.is_open()) {
     std::cerr << "Error opening file for writing!\n";
 } else {
