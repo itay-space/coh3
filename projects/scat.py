@@ -52,7 +52,8 @@ class Scatter:
         # Compute matchRad
         self.matchRad = self.R0 + self.a0 * np.log(1e6 * self.V0 / self.Ec)
         self.beta_matchRad = self.beta(self.matchRad)
-        self.U_mathRad = self.Ufunc(self.matchRad)
+        self.U_matchRad = self.Ufunc(self.matchRad)
+        self.T = 1-abs(self.U_matchRad)**2
 
     def _channel_params(self):
         """
