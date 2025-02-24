@@ -93,49 +93,6 @@ int omCalc
 
   omPotentialForm(zzprod, &omp, &lev, &pot);
 
-
-std::ofstream file("/home/itay/COH/coh3/projects/Fe56n_central_SO_V/optical_potential.txt");
-
-if (!file) {
-    std::cerr << "Error: Unable to open file for writing!" << std::endl;
-} else {
-    file << "------------------------------------\n";
-    file << "Optical Potential Information\n";
-    file << "------------------------------------\n";
-    file << std::setw(10) << "r [fm]"
-         << std::setw(15) << "V_real [MeV]"
-         << std::setw(15) << "V_imag [MeV]"
-         << std::setw(15) << "SO_real [MeV]"
-         << std::setw(15) << "SO_imag [MeV]"
-         << std::setw(15) << "Coulomb [MeV]"
-         << std::setw(15) << "1/r^2 [1/fm^2]"
-         << "\n";
-
-    for (int i = 0; i < pot.n_match; i++) {  // Ensure no out-of-bounds access
-        double r = i * pot.width;
-        double V_real = pot.mean_field[i].real();
-        double V_imag = pot.mean_field[i].imag();
-        double SO_real = pot.spin_orbit[i].real();
-        double SO_imag = pot.spin_orbit[i].imag();
-        double Coulomb = pot.coulomb[i];
-        double R2inv = pot.r2inv[i];
-
-        file << std::setw(10) << r
-             << std::setw(15) << V_real
-             << std::setw(15) << V_imag
-             << std::setw(15) << SO_real
-             << std::setw(15) << SO_imag
-             << std::setw(15) << Coulomb
-             << std::setw(15) << R2inv
-             << "\n";
-    }
-
-    file << "------------------------------------\n";
-    file.close();  // Close the file
-   // std::cout << "Optical potential data saved to optical_potential.txt" << std::endl;
-}
-
-
 //---------------------------------------
 //      Main Calculation
 
@@ -165,7 +122,11 @@ if (!file) {
       omInternalFunction(pot.n_match,pot.width,lev.wavesq,(double)l,pspin,xj,&pot,&wfn);
 
 // Save the wavefunction immediately after computation
-std::ofstream file("/home/itay/COH/coh3/projects/Fe56n_central_SO_V/intwavefunction_l_" + std::to_string(l) + ".dat");
+std::ofstream file("intwavefunction_l_" 
+    + std::to_string(l) 
+    + "_pspin_" + std::to_string(pspin) 
+    + "_xj_"    + std::to_string(xj) 
+    + ".dat");
 if (!file.is_open()) {
     std::cerr << "Error opening file for writing!\n";
 } else {
@@ -178,26 +139,6 @@ if (!file.is_open()) {
     file.close();
   //  std::cout << "inner Wavefunction saved to wavefunction.dat\n";
 }
-std::ofstream file1("/home/itay/COH/coh3/projects/Fe56n_central_SO_V/intwavefunction_derivative_l_" + std::to_string(l) + ".dat");
-if (!file1.is_open()) {
-    std::cerr << "Error opening file for writing!\n";
-} else {
-    for (int i = 6; i < pot.n_match; i++) {  // Start from index 6 to ensure we have enough points
-        double R = i * pot.width;  // Compute radial position
-
-        // Apply the Lagrange differentiation formula directly
-        std::complex<double> dpsi = ((wfn.internal[i] - wfn.internal[i-6]) / 60.0 
-                                   + 0.15 * (wfn.internal[i-5] - wfn.internal[i-1]) 
-                                   + 0.75 * (wfn.internal[i-2] - wfn.internal[i-4])) / 1e-3;
-
-        file1 << R << " " << dpsi.real() << " " << dpsi.imag() << " " << std::abs(dpsi) << "\n";
-    }
-    file1.close();
-   // std::cout << "Derivative of wavefunction saved to intwavefunction_derivative_l_" << l << ".dat\n";
-}
-
-
-
       int index = l*3+j;
       smat[index] = omSmatrix(pot.n_match,pot.width,pot.rad_match,a,b,&wfn);
       std::cout << "Smatrix = " << smat[index] <<", l = "<<l <<std::endl;

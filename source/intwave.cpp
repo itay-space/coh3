@@ -6,7 +6,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
-
+#include <fstream>
 #include "optical.h"
 #include "etc.h"
 
@@ -43,10 +43,15 @@ Wavefunc     *wfn)            // wave-functions (output)
 
   q1 = std::complex<double>(0.0,0.0);
   q2 = xl_term*pot->r2inv[1] - wavesq - pot->mean_field[1] - so_term*pot->spin_orbit[1];
-  
+  std::ofstream file("opticalpotential_l_" 
+    + std::to_string(xl) 
+    + "_pspin_" + std::to_string(xs) 
+    + "_xj_"    + std::to_string(xj) 
+    + ".dat");;
+  file << pot->width << " " << - pot->mean_field[1] - so_term*pot->spin_orbit[1] << "\n";
   for(int i=2 ; i<=integ ; i++){
     q3 = xl_term*pot->r2inv[i] - wavesq - pot->mean_field[i] - so_term*pot->spin_orbit[i];
-
+    file << i*pot->width << " " << - pot->mean_field[i] - so_term*pot->spin_orbit[i] << "\n";
     a1 = 1.0 - deltasq * q1;
     a2 = 2.0 + 10.0*deltasq * q2;
     p3 = a2 * p2 - a1 * p1;
@@ -57,6 +62,7 @@ Wavefunc     *wfn)            // wave-functions (output)
     q1 = q2; q2 = q3;
     p1 = p2; p2 = wfn->internal[i];
   }
+  file.close();
 }
 
 
