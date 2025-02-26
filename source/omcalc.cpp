@@ -130,7 +130,7 @@ std::ofstream file("intwavefunction_l_"
 if (!file.is_open()) {
     std::cerr << "Error opening file for writing!\n";
 } else {
-    for (int i = 0; i < pot.n_match; i++) {
+    for (int i = 1; i < pot.n_match; i++) {
         double R = i * pot.width;  // Compute radial position
         std::complex<double> psi = wfn.internal[i];
 

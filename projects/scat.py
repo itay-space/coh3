@@ -1,6 +1,12 @@
 import numpy as np
 from scipy.special import spherical_jn, spherical_yn
 from scipy.integrate import solve_ivp
+import pandas as pd
+
+import os
+import re
+import ast
+
 
 class Scatter:
     """
@@ -40,6 +46,7 @@ class Scatter:
         self.rso0 = rso0
         self.aso0 = aso0
         self.A = A
+        self.compare_dir = ""
         self.so_term = self.j*(self.j+1) - self.l*(self.l+1) - self.s*(self.s+1)
 
         # Compute channel params for this object
@@ -204,6 +211,11 @@ class Scatter:
             method="Radau"
         )
         return sol
+    
+    def u(self,r):
+        sol = self.solve_schrodinger()
+        r = np.asarray(r, dtype=float)
+        return np.interp(r, sol.t, sol.y[0])
 
     def beta(self, r):
         """
@@ -225,3 +237,195 @@ class Scatter:
         numerator = self.beta(r) * self.Ifunc(r) - r * self.Ifunc_derivative(r)
         denominator = self.beta(r) * self.Ofunc(r) - r * self.Ofunc_derivative(r)
         return numerator / denominator
+    
+
+
+
+    def load_merge_and_pivot_data(self,L_values=None, s_values=None, j_values=None):
+        """
+        Reads optical potential and wavefunction files from a directory, merges them on the common
+        radial coordinate 'r' and quantum numbers ('l', 's', 'j'), and pivots the merged DataFrame
+        so that each unique r is a single row. The columns become a MultiIndex with the variable names
+        (e.g., 'Real', 'Imag', 'Re_psi', 'Im_psi', 'Abs_psi') and the corresponding quantum numbers.
+
+        Optical potential files should be named as:
+        opticalpotential_l_{l}_pspin_{s}_xj_{j}.dat
+        and contain two columns:
+        - r (float)
+        - complex potential as a string (e.g., "(real, imag)")
+
+        Wavefunction files should be named as:
+        intwavefunction_l_{l}_pspin_{s}_xj_{j}.dat
+        and contain four columns:
+        - r (float)
+        - Re(ψ)
+        - Im(ψ)
+        - |ψ|
+        
+        Optional filters (L_values, s_values, j_values) can be provided.
+
+        Returns:
+        final_pivot: pd.DataFrame where the index is r and columns are a MultiIndex with
+                    levels [variable, l, s, j]. For instance, ('Real', 1.0, 0.5, 1.5) will hold
+                    the optical potential's real part for that quantum number combination.
+        """
+        data_dir = self.compare_dir
+        # Patterns to extract quantum numbers from filenames
+        opt_pattern = re.compile(r"^opticalpotential_l_(?P<l>\S+)_pspin_(?P<s>\S+)_xj_(?P<j>\S+)\.dat$")
+        wfn_pattern = re.compile(r"^intwavefunction_l_(?P<l>\S+)_pspin_(?P<s>\S+)_xj_(?P<j>\S+)\.dat$")
+        
+        all_files = os.listdir(data_dir)
+        optical_list = []
+        wavefunction_list = []
+        
+        # Process optical potential files
+        opt_files = [f for f in all_files if opt_pattern.match(f)]
+        for filename in opt_files:
+            m = opt_pattern.match(filename)
+            if not m:
+                continue
+            l_str, s_str, j_str = m.group("l"), m.group("s"), m.group("j")
+            try:
+                l_val = float(l_str)
+                s_val = float(s_str)
+                j_val = float(j_str)
+            except ValueError:
+                continue
+            
+            # Apply optional filters
+            if L_values is not None and l_val not in L_values:
+                continue
+            if s_values is not None and s_val not in s_values:
+                continue
+            if j_values is not None and j_val not in j_values:
+                continue
+            
+            path = os.path.join(data_dir, filename)
+            try:
+                # Expect two columns: r and a string for the complex potential
+                df = pd.read_csv(path, delim_whitespace=True, header=None)
+            except Exception as e:
+                print(f"Cannot read {path}: {e}")
+                continue
+            
+            if df.shape[1] < 2:
+                print(f"Skipping {filename}: not 2 columns.")
+                continue
+            
+            try:
+                df[0] = df[0].astype(float)
+            except Exception as e:
+                print(f"Error converting r to float in {filename}: {e}")
+                continue
+            
+            try:
+                # Parse the complex potential from string to a complex number
+                df[1] = df[1].apply(lambda x: complex(*ast.literal_eval(x)))
+            except Exception as e:
+                print(f"Error parsing complex number in {filename}: {e}")
+                continue
+            
+            # Extract real and imaginary parts; rename first column as 'r'
+            df["Real"] = df[1].apply(lambda c: c.real)
+            df["Imag"] = df[1].apply(lambda c: c.imag)
+            df.rename(columns={0: "r"}, inplace=True)
+            
+            # Add quantum number columns
+            df["l"] = l_val
+            df["s"] = s_val
+            df["j"] = j_val
+            
+            # Keep only needed columns
+            optical_list.append(df[["r", "Real", "Imag", "l", "s", "j"]])
+        
+        # Process wavefunction files
+        wfn_files = [f for f in all_files if wfn_pattern.match(f)]
+        for filename in wfn_files:
+            m = wfn_pattern.match(filename)
+            if not m:
+                continue
+            l_str, s_str, j_str = m.group("l"), m.group("s"), m.group("j")
+            try:
+                l_val = float(l_str)
+                s_val = float(s_str)
+                j_val = float(j_str)
+            except ValueError:
+                continue
+            
+            # Apply optional filters
+            if L_values is not None and l_val not in L_values:
+                continue
+            if s_values is not None and s_val not in s_values:
+                continue
+            if j_values is not None and j_val not in j_values:
+                continue
+            
+            path = os.path.join(data_dir, filename)
+            try:
+                data = np.loadtxt(path)
+            except Exception as e:
+                print(f"Cannot read {path}: {e}")
+                continue
+            
+            if data.ndim == 1 or data.shape[1] < 4:
+                print(f"Skipping {filename}: not 4 columns.")
+                continue
+            
+            # Expect four columns: r, Re_psi, Im_psi, Abs_psi
+            r, Re_psi, Im_psi, Abs_psi = data.T
+            
+            df_wfn = pd.DataFrame({
+                "r": r,
+                "Re_psi": Re_psi,
+                "Im_psi": Im_psi,
+                "Abs_psi": Abs_psi,
+                "l": l_val,
+                "s": s_val,
+                "j": j_val
+            })
+            wavefunction_list.append(df_wfn)
+        
+        # Concatenate the dataframes from individual files
+        optical_df = pd.concat(optical_list, ignore_index=True) if optical_list else pd.DataFrame()
+        wavefunction_df = pd.concat(wavefunction_list, ignore_index=True) if wavefunction_list else pd.DataFrame()
+        
+        # Merge the two DataFrames on common keys: r, l, s, j
+        merged_df = pd.merge(optical_df, wavefunction_df, on=["r", "l", "s", "j"], how="outer", 
+                            suffixes=("_opt", "_wfn"))
+        
+        # Pivot the optical potential variables
+        optical_pivot = merged_df.pivot_table(
+            index="r",
+            columns=["l", "s", "j"],
+            values=["Real", "Imag"],
+            aggfunc="first"
+        )
+        
+        # Pivot the wavefunction variables
+        wfn_pivot = merged_df.pivot_table(
+            index="r",
+            columns=["l", "s", "j"],
+            values=["Re_psi", "Im_psi", "Abs_psi"],
+            aggfunc="first"
+        )
+        
+        # Join the two pivoted DataFrames (they share the same index r)
+        final_pivot = optical_pivot.join(wfn_pivot)
+        
+        # Optionally, sort the index
+        final_pivot.sort_index(inplace=True)
+        
+        return final_pivot
+
+    def file_wfn_and_pot(self):
+        return self.load_merge_and_pivot_data(L_values=[self.l], s_values=[self.s], j_values=[self.j])
+    def u_and_v_df(self ,r):  
+        return pd.DataFrame({"u_real": np.real(self.u(r)), "u_imag": np.imag(self.u(r)), "tp_real": np.real(-self.c1 * self.total_potential(r)), "tp_imag": np.imag(-self.c1 * self.total_potential(r))} , index = r)
+
+    def get_functions_for_quantum_numbers(self,l_val, s_val, j_val):
+       
+        idx = pd.IndexSlice
+        pivot_df = self.load_merge_and_pivot_data()
+        result = pivot_df.loc[:, idx[:, l_val, s_val, j_val]]
+        result.columns = result.columns.droplevel([1, 2, 3])
+        return result

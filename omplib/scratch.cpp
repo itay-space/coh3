@@ -15,8 +15,8 @@ unsigned int OMPscratch(double e,int at,int zt,int ai,int zi,Optical *omp)
   omp->r0  =  1; // R = r0*A^(1/3)
   omp->rs  =  1;
   omp->a0  =  1 ;
-  omp->vso1 = 0; // spin-orbit coupling 
-  omp->avso = 1;
+  omp->vso1 = 1; // spin-orbit coupling 
+  omp->avso = 0.1;
   omp->rvso = 1;
 
   return(pf);
