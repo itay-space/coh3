@@ -1,0 +1,162 @@
+###################################################################################################
+#                                                                                    3.6.0-Cordelia
+#            Test
+#......................................................................../  026-056Fe //  10.000000
+#                                                                                 SYSTEM PARAMETERS
+#            AtomicNum    MassNum
+#    Target         26         56
+#  Incident          0          1
+#            Ecms[MeV]  Elab[MeV] ReduceMass WaveNumber
+     Energy 9.8229e+00 1.0000e+01 9.9080e-01 6.8239e-01
+#......................................................................../  026-056Fe //  10.000000
+#                                                                           OPTICAL MODEL POTENTIAL
+# OMP  0      V         Vs        Wv        Ws        Vso       Wso
+      r[fm]   1.19794   0.00000   1.19794   1.28176   1.01629   1.01629
+      a[fm]   0.66947   0.00000   0.66947   0.53533   0.59000   0.59000
+ Depth[MeV]  48.94670   0.00000   0.78148   7.20962   5.63027  -0.04594
+#......................................................................../  026-056Fe //  10.000000
+#                                                                      TOTAL REACTION CROSS SECTION
+#                Total    Elastic   Reaction
+  Sigma[mb] 3.1404e+03 1.6393e+03 1.5010e+03
+=== setupChain started ===
+pmax: 10, initial excitation energy: 1.7469e+01
+Added first compound: Z=26, A=57, mass_excess=-6.0181e+01, max_energy=1.7469e+01
+
+--- Processing compound index 0 ---
+Channel 0 is closed (pdt[j].omp == 0), skipping.
+Processing channel 1...
+Residual nucleus after channel 1: Z=26, A=56
+New compound candidate: Z=26, A=56, mass=-6.0606e+01, sepa=7.6462e+00, emax=9.8229e+00
+Adding new compound nucleus. Generation: 1
+Compound added at index 1: Z=26, A=56, mass_excess=-6.0606e+01, max_energy=9.8229e+00, generation=1
+Channel 2 is closed (pdt[j].omp == 0), skipping.
+Channel 3 is closed (pdt[j].omp == 0), skipping.
+Channel 4 is closed (pdt[j].omp == 0), skipping.
+Channel 5 is closed (pdt[j].omp == 0), skipping.
+Channel 6 is closed (pdt[j].omp == 0), skipping.
+
+--- Processing compound index 1 ---
+Channel 0 is closed (pdt[j].omp == 0), skipping.
+Processing channel 1...
+Residual nucleus after channel 1: Z=26, A=55
+New compound candidate: Z=26, A=55, mass=-5.7481e+01, sepa=1.1197e+01, emax=-1.3744e+00
+Compound not added: checkmass=1, emax > 0: 0, gen[i] (1) < pmax (10)
+Channel 2 is closed (pdt[j].omp == 0), skipping.
+Channel 3 is closed (pdt[j].omp == 0), skipping.
+Channel 4 is closed (pdt[j].omp == 0), skipping.
+Channel 5 is closed (pdt[j].omp == 0), skipping.
+Channel 6 is closed (pdt[j].omp == 0), skipping.
+
+--- Processing compound index 2 ---
+No new compounds added in the last iteration. Breaking out of loop.
+
+=== Setting up decay channels for each compound ===
+
+Setting decay channels for compound index 0
+Initialized channel 0 for compound 0
+Residual nucleus for channel 0: Z=26, A=57
+Channel 0: potential daughter found at index 0 with sepa=0.0000e+00, emax=1.7469e+01
+Channel 0 linked to compound 0 with binding energy 0.0000e+00 and status open
+Initialized channel 1 for compound 0
+Residual nucleus for channel 1: Z=26, A=56
+Channel 1: potential daughter found at index 1 with sepa=7.6462e+00, emax=9.8229e+00
+Channel 1 linked to compound 1 with binding energy 7.6462e+00 and status open
+Initialized channel 2 for compound 0
+Residual nucleus for channel 2: Z=25, A=56
+Initialized channel 3 for compound 0
+Residual nucleus for channel 3: Z=24, A=53
+Initialized channel 4 for compound 0
+Residual nucleus for channel 4: Z=25, A=55
+Initialized channel 5 for compound 0
+Residual nucleus for channel 5: Z=25, A=54
+Initialized channel 6 for compound 0
+Residual nucleus for channel 6: Z=24, A=54
+Final mass for compound 0: 5.6935e+01
+
+Setting decay channels for compound index 1
+Initialized channel 0 for compound 1
+Residual nucleus for channel 0: Z=26, A=56
+Channel 0: potential daughter found at index 1 with sepa=0.0000e+00, emax=9.8229e+00
+Channel 0 linked to compound 1 with binding energy 0.0000e+00 and status open
+Initialized channel 1 for compound 1
+Residual nucleus for channel 1: Z=26, A=55
+Initialized channel 2 for compound 1
+Residual nucleus for channel 2: Z=25, A=55
+Initialized channel 3 for compound 1
+Residual nucleus for channel 3: Z=24, A=52
+Initialized channel 4 for compound 1
+Residual nucleus for channel 4: Z=25, A=54
+Initialized channel 5 for compound 1
+Residual nucleus for channel 5: Z=25, A=53
+Initialized channel 6 for compound 1
+Residual nucleus for channel 6: Z=24, A=53
+Final mass for compound 1: 5.5935e+01
+
+=== Counting emitted particles ===
+Incrementing particle count for channel 1 at compound 1 (child of 0)
+
+=== Finished setting up decay chain ===
+Total number of compounds: 2
+#......................................................................../  026-056Fe //  10.000000
+#                                                                                      TARGET STATE
+#           Excitation  Spin
+  026-056Fe 0.0000e+00  0.0+
+#......................................................................../  026-056Fe //  10.000000
+#                                                                             COMPOUND NUCLEUS DATA
+#              Z     A  MassExess    Ex(max) Separation     N-cont    N-level
+  026-057Fe              -60.1812    17.4691                   149         30
+      gamma  026-057Fe     0.0000                0.0000
+    neutron  026-056Fe     8.0714                7.6462
+  026-056Fe              -60.6064     9.8229                    46         77
+      gamma  026-056Fe     0.0000                0.0000
+#......................................................................../  026-056Fe //  10.000000
+#                                                                          LEVEL DENSITY PARAMETERS
+#                 a       Pairing     T          E0         Em         Sigma2     Eshell         D0
+  026-057Fe     7.4367     1.5804     1.5737    -3.0878    12.2497     4.5917  -2.515600 2.1334e-02
+  026-056Fe     7.3020     2.6593     1.6240    -1.8095    13.2217     6.4286  -3.111000
+#......................................................................../  026-056Fe //  10.000000
+#                                                                       GIANT DIPOLE RESONANCE DATA
+#          Energy[MeV] Width[MeV] Sigma0[mb] <Gam>[MeV] Profile
+         E1    18.6283     5.5885 108.114958                 GL
+         M1    10.6535     4.0000   0.810390                 SL
+         E2    16.3700     5.4260   1.301261                 SL
+         M2    10.6535     4.0000   0.000648                 SL
+         E3    16.3700     5.4260   0.001041                 SL
+   Average Gamma Width                       4.1596e-07
+#......................................................................../  026-056Fe //  10.000000
+#                                                                          SUM SPECTRA FOR COMPOUND
+#            026-057Fe      gamma    neutron
+ SpcSum[mb]            1.0653e+00 1.5008e+03
+ Emean[MeV]            4.4330e+00 2.5727e+00
+#......................................................................../  026-056Fe //  10.000000
+#                                                                          SUM SPECTRA FOR COMPOUND
+#            026-056Fe      gamma
+ SpcSum[mb]            4.9646e+03
+ Emean[MeV]            2.1751e+00
+#......................................................................../  026-056Fe //  10.000000
+#                                                                INDIVIDUAL GROUND STATE PRODUCTION
+#             Residual  Prod.[mb]  Qval[MeV]   Particles
+#                                              n p a d t h
+ Production  026-057Fe 2.3200e-01    7.64619   0 0 0 0 0 0
+ Production  026-056Fe 1.5008e+03    0.00000   1 0 0 0 0 0
+                   sum 1.5010e+03
+#......................................................................../  026-056Fe //  10.000000
+#                                                           STABLE AND LONG-LIVED STATE PRODUCTIONS
+#       Residual    Ex[MeV]     Jpi     T(1/2)[s]  Prod.[mb] Meta
+    1  026-056Fe    0.00000    0.0+    ---------- 1.5008e+03
+    2  026-057Fe    0.00000    0.5-    ---------- 2.3200e-01
+#                                         g.s.sum 1.5010e+03
+
+
+#......................................................................../  026-056Fe //  10.000000
+#                                                                                   ISOMERIC RATIOS
+#       Residual    Ex[MeV]     Jpi     T(1/2)[s] Ratio      m/(g-m)
+
+
+#......................................................................../  026-056Fe //  10.000000
+#                                                                               PARTICLE PRODUCTION
+#             Particle  Prod.[mb] Multiplic. Emean[MeV]
+ ParticlPrd      gamma 4.9657e+03 3.3082e+00 2.1756e+00
+ ParticlPrd    neutron 1.5008e+03 9.9985e-01 2.5727e+00
+
+

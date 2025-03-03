@@ -1,0 +1,12 @@
+BEGIN    :  Test
+DATA     :
+target   :        Fe        56
+incident :         n
+energy   : 10.0
+#Defulat is koning
+omp_n    : Koning
+ENDDATA  :
+HFS      :
+ENDHFS   :
+END      :
+#EOF

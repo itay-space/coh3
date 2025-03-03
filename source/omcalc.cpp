@@ -122,6 +122,7 @@ int omCalc
       omInternalFunction(pot.n_match,pot.width,lev.wavesq,(double)l,pspin,xj,&pot,&wfn);
 
 // Save the wavefunction immediately after computation
+/*
 std::ofstream file("intwavefunction_l_" 
     + std::to_string(l) 
     + "_pspin_" + std::to_string(pspin) 
@@ -139,9 +140,10 @@ if (!file.is_open()) {
     file.close();
   //  std::cout << "inner Wavefunction saved to wavefunction.dat\n";
 }
+*/
       int index = l*3+j;
       smat[index] = omSmatrix(pot.n_match,pot.width,pot.rad_match,a,b,&wfn);
-      std::cout << "Smatrix = " << smat[index] <<", l = "<<l <<std::endl;
+     // std::cout << "Smatrix = " << smat[index] <<", l = "<<l <<std::endl;
       tran[index] = 1.0-norm(smat[index]); if(tran[index] < 0.0) tran[index] = 0.0;
 
 #ifdef NormalizedWavefunction

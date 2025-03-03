@@ -50,7 +50,7 @@ int omPotentialForm(const int zzprod, Optical *omp, LevelData *ldt, Potential *p
                                                         /(omp->awso*omp->Rwso*energy))-eps);
 
   pot->rad_match = x[0];
-  std::cout << "Matching Radius: " << pot->rad_match << " fm" << std::endl;
+  //std::cout << "Matching Radius: " << pot->rad_match << " fm" << std::endl;
 
   for(int i=1 ; i<6 ; i++) if(x[i] > pot->rad_match) pot->rad_match=x[i];
 
