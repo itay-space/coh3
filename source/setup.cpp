@@ -322,6 +322,11 @@ void setupEnergy(System *sys)
     sqrt(sys->cms_energy*sys->reduced_mass*2.0*AMUNIT)/VLIGHT/HBAR;
 
   sys->ex_total = sys->cms_energy + sys->incident.mass_excess + tmx - cmx;
+      std::cout << "sys->cms_energy: " << sys->cms_energy << std::endl;
+std::cout << "sys->incident.mass_excess: " << sys->incident.mass_excess << std::endl;
+std::cout << "tmx: " << tmx << std::endl;
+std::cout << "cmx: " << cmx << std::endl;
+std::cout << "Total: " << (sys->cms_energy + sys->incident.mass_excess + tmx - cmx) << std::endl;
 
   /*** in the case of excited target */
   if(sys->excitation>0.0) sys->ex_total += sys->excitation;

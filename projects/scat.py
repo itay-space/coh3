@@ -17,7 +17,7 @@ class Scatter:
 
     # Class-level constants (physical constants)
     cso   = 2.04553
-    amu   = 931.494103
+    amu   = 931.494103 #MeV/c^2
     hbarc = 197.3
 
     def __init__(self, m1_amu, m2_amu, Ein_lab, j, l, s , V0, r0, a0, Vso0, rso0, aso0, A):
@@ -431,7 +431,7 @@ class Scatter:
         return result
 
   
-# nuclear masses from the Audi 2012 table, with FRDM2012
+# nuclear masses from the Audi 2012 table, with FRDM2012 M_exp in MeV
 MassExcess = [ (      1,   8.071317),  (   1001,   7.288971), (   1002,  13.135722), (   1003,  14.949806), (   1004,  24.621123),
                 (   1005,  32.892440), (   1006,  41.875717), (   1007,  49.135000), (   2003,  14.931216), (   2004,   2.424916),
                 (   2005,  11.231233), (   2006,  17.592095), (   2007,  26.073126), (   2008,  31.609681), (   2009,  40.935896),
@@ -2319,13 +2319,9 @@ MassExcess = [ (      1,   8.071317),  (   1001,   7.288971), (   1002,  13.1357
 
 
 def get_mass_df():
-    df = pd.DataFrame(MassExcess , columns = ["ZAID","M_ex[mamu]"])
+    df = pd.DataFrame(MassExcess , columns = ["ZAID","M_ex[MeV]"])
     df['Z'] = df["ZAID"] // 1000
     df['A'] = df["ZAID"] % 1000
     df['N'] = df['A'] - df['Z']
-    df['Ex_per_A[mamu]'] = df["M_ex[mamu]"] / df['A']
-    df['M_ex[amu]'] = df["M_ex[mamu]"] /1000
-    df['M[amu]'] = df["M_ex[amu]"] + df['A']
-    df['M[MeV]'] = df["M[amu]"] * Scatter.amu
-
+    df['M[MeV]'] = df["M_ex[MeV]"] + df['A'] * Scatter.amu
     return df
